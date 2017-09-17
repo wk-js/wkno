@@ -4,7 +4,9 @@
 const { Parser } = require('wk-argv-parser')
 Object.assign(global, require('../lib/wkno'))
 
-const path = require('path')
+const path      = require('path')
+const fs        = require('fs')
+const { spawn } = require('child_process')
 
 const argv = process.argv.slice(2)
 const cli  = path.basename(process.argv[1])
@@ -38,7 +40,7 @@ const WKCmd = Parser
 .boolean('tasks', false)
 .alias('tasks', [ 'T' ])
 
-.required('file', 'Need a Wkfile')
+// .required('file', 'Need a Wkfile')
 
 .help()
 const ContextArgv = Parser.getContextARGV(argv, WKCmd.config)
@@ -79,11 +81,75 @@ function listTask( tasks ) {
   console.log(tsks.join('\n'))
 }
 
+function getFile( p ) {
+  try {
+    fs.accessSync( path.resolve(p), fs.constants.R_OK )
+    return require( path.resolve(p) )
+  } catch(e) {
+    return null
+  }
+}
+
+function exec(cmd) {
+  return function(resolve, reject) {
+    let exited = false
+    let bash   = '/bin/sh'
+    let args   = [ '-c', cmd ]
+
+    if (process.platform === 'win32') {
+      bash = 'cmd'
+      args = [ '/c', cmd ]
+      // bash  = 'bash'
+      // args = [ '-c', cmd ]
+    }
+
+    function exit(code, signal, err) {
+      if (exited) return
+      exited = true
+
+      const result = {
+        code: code,
+        signal: signal,
+        err: err
+      }
+
+      if (code != 0 || err) {
+        return reject(result)
+      }
+
+      resolve(result)
+    }
+
+    const ps = spawn(bash, args, { stdio: 'inherit' })
+
+    ps.on('error', function(value) {
+      let err
+      if (value) {
+        if (value instanceof Error) err = value
+        else if ( typeof value === 'string' ) err = new Error( value )
+        else err = new Error( value.toString() )
+      } else {
+        err = new Error()
+      }
+
+      exit(null, null, err)
+    })
+
+    ps.on('exit', exit)
+  }
+}
+
 // --file, -F
-const tasks = require(
-  path.isAbsolute(options.file) ?
-  options.file : path.join(process.cwd(), options.file)
-)
+const tasks = {}
+Object.assign(tasks, getFile( options.file ) || {})
+
+const pkg = getFile( 'package.json' )
+if (pkg) {
+  for (const key in pkg.scripts) {
+    tasks[key] = exec(`npm run ${key}`)
+  }
+}
+
 
 // --tasks, -T
 if (options.tasks) {
