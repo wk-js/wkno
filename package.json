@@ -1,0 +1,21 @@
+{
+  "name": "wkno",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/wkno.js",
+  "bin": {
+    "wkno": "bin/wkno.js"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "when": "^3.7.8",
+    "wk-argv-parser": "github:wk-js/argv-parser"
+  }
+}
