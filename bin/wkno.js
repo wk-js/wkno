@@ -18,7 +18,7 @@ const WKCmd = Parser
 
 // --file, -F
 .describe('file', 'Precise a default file')
-.string('file', process.cwd() + '/Wkfile')
+.string('file')
 .alias('file', [ 'F' ])
 .validate('file', function(pth) {
   const fs = require('fs')
@@ -40,9 +40,9 @@ const WKCmd = Parser
 .boolean('tasks', false)
 .alias('tasks', [ 'T' ])
 
-// .required('file', 'Need a Wkfile')
-
+// --help, -h
 .help()
+
 const ContextArgv = Parser.getContextARGV(argv, WKCmd.config)
 const TaskArgv    = argv.filter((str) => {
   return ContextArgv.indexOf(str) === -1
