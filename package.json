@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "when": "^3.7.8",
-    "wk-argv-parser": "github:wk-js/argv-parser"
+    "wk-argv-parser": "github:wk-js/argv-parser",
+    "wk-print": "github:wk-js/print"
   }
 }
