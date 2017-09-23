@@ -1,0 +1,3 @@
+'use strict'
+
+wk.require('./tasks/bump.js', true)
