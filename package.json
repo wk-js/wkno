@@ -1,7 +1,7 @@
 {
   "name": "wkno",
   "version": "0.0.6",
-  "description": "",
+  "description": "Lightweight task runner",
   "main": "lib/wkno.js",
   "bin": {
     "wkno": "bin/wkno.js"
