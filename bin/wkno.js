@@ -93,7 +93,7 @@ function listTask( tasks ) {
     return valid
   })
   .forEach(function(tsk) {
-    if (!tasks[tsk].description) return tsks.push( `wkno ${tsk}` )
+    if (!tasks[tsk].description) return tsks.push( `wkno ${Print.green(tsk)}` )
     tsks.push( `wkno ${Print.green(pad(tsk, length + 5, ' ', false))} ${Print.grey('# '+tasks[tsk].description)}` )
   })
 
