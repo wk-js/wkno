@@ -1,7 +1,5 @@
 'use strict'
 
-const wkno = require('../lib/wkno')
-
 const tasks = {
 
   "task1": function(resolve) {
@@ -25,4 +23,9 @@ const tasks = {
 
 }
 
-wkno.serie(tasks)
+module.exports = tasks
+
+if (!global.wkno) {
+  const wkno = require('../lib/wkno')
+  wkno.serie(tasks)
+}
