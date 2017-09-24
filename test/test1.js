@@ -1,8 +1,10 @@
 'use strict'
 
+const wkno = require('../lib/wkno')
+
 const tasks = {
 
-  "task1": task(function(resolve) {
+  "task1": wkno.task(function(resolve) {
     resolve(this.name)
     this.name = 'Max'
   }, { name: 'John' }),
@@ -19,13 +21,8 @@ const tasks = {
 
 }
 
-module.exports = tasks
-
 // The second arguments is array to reorder task execute or repeat task
-if (!global.wkno) {
-  const wkno = require('../lib/wkno')
-  wkno.serie(tasks, [
-    'task3', 'task1', 'task2',
-    'task3', 'task1', 'task2'
-  ])
-}
+wkno.serie(tasks, [
+  'task3', 'task1', 'task2',
+  'task3', 'task1', 'task2'
+])

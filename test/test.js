@@ -1,31 +1,31 @@
 'use strict'
 
+const wkno = require('../lib/wkno')
+
 const tasks = {
 
   "task1": function(resolve) {
-    resolve({ name: 'John' })
+    this.result.shared.name = 'John'
+    resolve([ this.result.shared.name ])
   },
 
   "task2": function(resolve) {
-    this.result.message = 'Salut'
-    resolve(this.result)
+    this.result.shared.message = 'Salut'
+    this.result.previous.push( this.result.shared.message )
+    resolve(this.result.previous)
   },
 
   "task3": function(resolve) {
-    this.result.day = 'monday'
-    resolve(this.result)
+    this.result.shared.day = 'monday'
+    this.result.previous.push( this.result.shared.day )
+    resolve(this.result.previous)
   },
 
   "task4": function(resolve) {
     console.log(this.result)
-    resolve(this)
+    resolve()
   }
 
 }
 
-module.exports = tasks
-
-if (!global.wkno) {
-  const wkno = require('../lib/wkno')
-  wkno.serie(tasks)
-}
+wkno.serie(tasks, null, {})
