@@ -69,7 +69,7 @@ wkno task1 task2 task3 task4
 
 In CLI, `wkno` add some methods in `global` scope.
 
-* `wkno.concurrency` (Default: 10) - Maximum task called at the same time in parallel
+* `wkno.config.concurrency` (Default: 10) - Maximum task called at the same time in parallel
 * `task(action:Function, context?:Object, options?:Object)`
 * `serie(tasks:Object, order?:Array)`
 * `parallel(tasks:Object, order?:Array)`
@@ -121,6 +121,8 @@ serie(tasks, [
 ```
 
 ```
+wkno -F wkno.js
+
 > Who is there ?
 > John
 > Who is there ?
@@ -146,12 +148,17 @@ wkno.serie(tasks, [
 
 Create a new task
 
-* `action` - Task action
-* `context?` - An object accessible inside task action with `this`
-* `options?` - Task options
-* `{String} options.taskName` - Task name
-* `{String} options.description` - Task description
-* `{Boolean} options.visible` - Hide task in `wkno -T`
+The `action` is a function called at task execution.
+
+The `context?` is the function bound object. *(Optional)*
+
+The `options?` is a list of task options listed below. *(Optional)*
+
+* `options.taskName` - Name of the task
+* `options.description` - Description of the task
+* `options.visible` - (Default: true) Hide task in `wkno -T`
+* `options.async` - (Default: false) Wait `resolve(value)` or `reject(error)` call. Else take returned value.
+* `options.concurrency` - (Default: 1) Task concurrency
 
 ### `serie(tasks:Object, order?:Array) -> Promise`
 
@@ -164,5 +171,16 @@ Execute tasks in serie
 
 Execute tasks in parallel
 
-* `tasks` - Tasks
-* `order?` — By default, tasks are executed in the `Object.keys()` order. But you can change that order with an array of name. You can call multiple time the same task name.
+The `tasks` is an object containing all the tasks needed for the execution. If no `order` is given, tasks are executed in the `Object.keys(tasks)` order.
+
+The `order?` is an array with the name of tasks to execute. The name of task can be written multiple time.
+
+### `wkno.config`
+
+The `wkno.config.concurrency` (Default: 10) is the concurrency in parallel.
+
+The `wkno.config.defaults` are default task options when a task is created.
+
+* `wkno.config.defaults.async` (Default: false)
+* `wkno.config.defaults.visible` (Default: true)
+* `wkno.config.defaults.concurrency` (Default: 1)

@@ -1,6 +1,7 @@
 'use strict'
 
 const wkno = require('../lib/wkno')
+wkno.config.defaults.async = true
 
 const tasks = {
 

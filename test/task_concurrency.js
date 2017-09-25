@@ -2,16 +2,12 @@
 
 const wkno = require('../lib/wkno')
 
-const tasks = {
-
-  task0: function(resolve) {
+wkno.parallel({
+  task0: wkno.task(function(resolve) {
     console.log('task0')
     setTimeout(resolve, 1000)
-  }
-
-}
-
-wkno.parallel(tasks, [
+  }, null, { async: true })
+}, [
   'task0',
   'task0',
   'task0',

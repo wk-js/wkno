@@ -112,17 +112,12 @@ function getFile( p ) {
 function prepareExec(cmd, description) {
   return task(function(resolve, reject) {
     let exited = false
-    let bash   = '/bin/sh'
+    let bash   = 'bash'
     let args   = [ '-c', cmd ]
 
-    if (process.platform === 'win32') {
-      if (options.bash) {
-        bash  = 'bash'
-        args = [ '-c', cmd ]
-      } else {
-        bash = 'cmd'
-        args = [ '/c', cmd ]
-      }
+    if (process.platform === 'win32' && !options.bash) {
+      bash = 'cmd'
+      args = [ '/c', cmd ]
     }
 
     function exit(code, signal, err) {
@@ -199,6 +194,7 @@ if (options.help) {
   return
 }
 
+// Execute tasks
 if (TaskArgv.length > 0) {
   if (options.parallel) {
     parallel(tasks, TaskArgv)
@@ -208,6 +204,3 @@ if (TaskArgv.length > 0) {
 
   return
 }
-
-// By default list tasks
-listTask(tasks)

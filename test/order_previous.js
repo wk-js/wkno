@@ -4,19 +4,18 @@ const wkno = require('../lib/wkno')
 
 const tasks = {
 
-  "task1": wkno.task(function(resolve) {
-    resolve(this.name)
-    this.name = 'Max'
+  "task1": wkno.task(function() {
+    this.name = this.result.previous || this.name
+    return this.name
   }, { name: 'John' }),
 
-  "task2": function(resolve) {
-    console.log(this.result)
-    resolve()
+  "task2": function() {
+    console.log(this.result.previous)
   },
 
-  "task3": function(resolve) {
+  "task3": function() {
     console.log('Who is there ?')
-    resolve()
+    return 'Max'
   }
 
 }
