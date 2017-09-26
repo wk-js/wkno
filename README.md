@@ -158,7 +158,7 @@ The `options?` is a list of task options listed below. *(Optional)*
 * `options.description` - Description of the task
 * `options.visible` - (Default: true) Hide task in `wkno -T`
 * `options.async` - (Default: false) Wait `resolve(value)` or `reject(error)` call. Else take returned value.
-* `options.concurrency` - (Default: 1) Task concurrency
+* `options.concurrency` - (Default: -1) Task concurrency
 
 ### `serie(tasks:Object, order?:Array) -> Promise`
 
@@ -183,4 +183,4 @@ The `wkno.config.defaults` are default task options when a task is created.
 
 * `wkno.config.defaults.async` (Default: false)
 * `wkno.config.defaults.visible` (Default: true)
-* `wkno.config.defaults.concurrency` (Default: 1)
+* `wkno.config.defaults.concurrency` (Default: -1)
